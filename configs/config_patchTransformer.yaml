@@ -1,0 +1,58 @@
+# data parameters
+use_augmentation: True
+
+template_shape: [252, 150, 3]  # H, W
+template_resize: False
+
+# geometric transformation --- STN parameters
+learnableSTN: False   # learn STN or fix it
+STN_loss: SIMMMask # L1, L2, SIMMMask, L1Mask
+STN: tps   # affine or tps
+loc_backbone: resnet18
+loc_downsample_dim: 128
+loc_fc_dim: 256
+adjust_patch_size: False  # learn to adjust the patch size for pasting
+TPS_localizer: bounded_stn #bounded_stn or unbounded_stn
+TPS_range: [0.999, 0.999]
+TPS_grid: [20, 10]
+
+# patch blurring module
+use_PBM: False
+
+# printer color transformation (PCT)
+use_PCT: False
+PrinterCT: PCTLinear # PCT or PCTLinear or PCTLinearBias or PCTNeural
+PCT_loss: L1
+color_transformation_path: 'kaidi_color_model/weights2_digital2new_0_1.npz'
+
+use_LCT: False
+LCT_loss: L1Mask
+LightingCT: gen   #cc (color constancy, i.e. cc_fc4)  or gen (image generator)
+lct_backbone: alexnet   #alextnet, resnet18
+lct_input_size: [256, 256]
+#generator_input_size: [768, 768]
+#generator_input_size: [384, 384]
+generator_input_size: [256, 256]
+
+epochs: 1000
+batch_size: 72
+input_dim: 3
+ngf: 48
+image_shape: [256, 256, 3]
+
+# log
+model_checkpoint: checkpoint.pth.tar
+model_best: model_best.pth.tar
+
+# training parameters
+cuda: True
+gpu_ids: [0, 1, 2, 3, 4, 5]    # set the GPU ids to use, e.g. [0] or [1, 2]
+num_workers: 24
+lr: 0.0001
+beta1: 0.5
+beta2: 0.9
+print_iter: 20
+
+# scheduler
+scheduler_patience: 25
+scheduler_factor: 0.5

@@ -1,0 +1,6 @@
+[submodule "detector/detectron2"]
+	path = detector/detectron2
+	url = https://github.com/facebookresearch/detectron2.git
+[submodule "detector/SSD"]
+	path = detector/SSD
+	url = https://github.com/lufficc/SSD

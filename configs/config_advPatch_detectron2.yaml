@@ -1,0 +1,79 @@
+# data parameters
+use_augmentation: True
+use_ohem: False
+ohem_ratio: 0.5
+# similar to data augmentation
+use_EOT: False
+
+# patch related parameters
+adv_patch_size: [416, 416, 3]
+apply_border_mask: False
+border_mask_ratio: 0.05769  # 24/416
+border_value: 0.75  # white T-shirt
+tv_loss_weight: 2.5
+
+# Detector information
+detector_name: Detectron2 # YOLO_V2|YOLO_V3|Detectron2
+#detector_model_path: ./detector/yolov3
+detector_model_path: ./detector/detectron2/configs/COCO-Detection/faster_rcnn_R_50_C4_1x.yaml  # set to different yaml for different model
+detector_input_size: [1080, 1920]
+detector_scale_size: [416, 416]
+target_obj_id: 0
+train_nms_thresh: 0.8
+train_conf_thresh: 0.2999
+val_nms_thresh: 0.4
+val_conf_thresh: 0.7
+val_iou_threshold: 0.1 # 0.5
+
+template_shape: [252, 150, 3]  # H, W print size
+template_resize: False # resize template and place it in the input image
+use_loc_net:  True  # use localization net
+
+
+# geometric transformation --- STN parameters
+STN: tps   # affine or tps
+use_STN_loss: True
+#STN_loss_weight: 1.0
+loc_backbone: resnet18
+loc_downsample_dim: 128
+loc_fc_dim: 256
+TPS_localizer: bounded_stn #bounded_stn or unbounded_stn
+TPS_range: [0.999, 0.999]
+TPS_grid: [20, 10]
+
+# printer color transformation (PCT)
+color_transformation_path: 'kaidi_color_model/weights2_0_1.npz'
+PrinterCT: PCT   # PCT, PCTLinear (linear), PCTNeural (non-linear) or None (no PCT applied)
+use_double_PCT: False
+
+# lighting color transformation
+use_LightingCT: False
+LightingCT: cc_fcn4    #cc_fcn4 or generator
+
+image_shape: [256, 256, 3]
+mask_shape: [128, 128]
+
+# log
+log_dir: 
+log_file: log.log
+model_checkpoint: checkpoint.pth.tar
+model_best: model_best.pth.tar
+adv_patch_img: adv_patch.png
+adv_patch_img_best: best_adv_patch.png
+
+
+# training parameters
+cuda: True
+gpu_ids: [0, 1, 2, 3, 4, 5]    # set the GPU ids to use, e.g. [0] or [1, 2]
+num_workers: 24
+compute_dsr: False
+visualize: False
+epochs: 1000
+batch_size: 72
+lr: 0.1
+beta1: 0.5
+beta2: 0.9
+print_iter: 20
+# scheduler
+scheduler_patience: 25
+scheduler_factor: 0.5

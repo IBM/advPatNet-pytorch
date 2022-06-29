@@ -1,0 +1,6 @@
+torch
+torchvision
+yacs
+cython
+packaging
+easydict

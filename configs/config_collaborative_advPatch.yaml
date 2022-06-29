@@ -1,0 +1,110 @@
+# data parameters
+use_augmentation: True
+use_ohem: False
+ohem_ratio: 0.5
+# similar to data augmentation
+use_EOT: False
+
+# patch related parameters
+#adv_patch_size: [416, 416, 3]
+adv_patch_size: [252, 150, 3]
+apply_border_mask: False
+border_mask_ratio: 0.05769  # 24/416
+border_value: 0.75  # white T-shirt
+tv_loss_weight: 2.5
+
+# Detector information
+#YOLO: YOLO_V2, YOLO_V3
+#SSD: SSD300_VGG16, SSD512_VGG16
+#Faster_RCNN: Faster_RCNN_VGG16, Faster_RCNN_R50, Faster_RCNN_R101
+#DETECTRON2: DFaster_RCNN_R50, DFaster_RCNN_R101, DRCNN_FPN_R50, DRCNN_FPN_R101, DRetinaNet_R50, DRetinaNet_R101
+
+detector_impl: Faster_RCNN
+detector_name: Faster_RCNN_VGG16
+detector_input_size: [1080, 1920]
+#detector_input_size: [540, 960]
+#detector_input_size: [416, 416]
+detector_test_size: [-1,-1]
+object_dataset: COCO # COCO or VOC
+target_object_id: -1
+train_nms_thresh: 0.8
+train_conf_thresh: 0.2999
+val_nms_thresh: 0.4
+val_conf_thresh: 0.7
+val_iou_threshold: 0.1 # 0.5
+
+template_shape: [252, 150, 3]  # H, W
+#template_scaling_factor: -1 # how much blurring to apply on the template
+
+# geometric transformation --- STN parameters
+learnableSTN: False   # learn STN or fix it
+STN_loss: SIMMMask # L1, L2, SIMMMask, L1Mask
+STN: tps   # affine or tps
+loc_backbone: resnet18
+loc_downsample_dim: 128
+loc_fc_dim: 256
+adjust_patch_size: False  # learn to adjust the patch size for pasting
+TPS_localizer: bounded_stn #bounded_stn or unbounded_stn
+TPS_range: [0.999, 0.999]
+TPS_grid: [20, 10]
+
+# printer color transformation (PCT)
+use_PCT: False
+PrinterCT: PCTLinear # PCT or PCTLinear or PCTLinearBias or PCTNeural
+PCT_loss: L1
+color_transformation_path: 'kaidi_color_model/weights2_digital2new_0_1.npz'
+
+use_LCT: False
+LCT_loss: L1
+LightingCT: gen   #cc (color constancy, i.e. cc_fc4)  or gen (image generator)
+lct_backbone: alexnet   #alextnet, resnet18
+lct_input_size: [256, 256]
+#generator_input_size: [512, 512]
+generator_input_size: [384, 384]
+#generator_input_size: [256, 256]
+#generator_input_size: [272, 272]
+
+collaborative_learning: False
+CL_pretrained: False
+collaborative_weight: False
+
+half_patches: False
+kd_type: MSE #margin , MSE , L1, SmoothL1 or mutual, one, SmoothL1Mask
+kd_norm: 2  # 1: L1 2: L2
+
+# for non-colloaborative_learning
+near_patch_path: test_collaborative/YOLO_V2_COCO_adv252_neu_near_tps_PCTLinear_cc_alexnet_p256_L1Mask_tv25_bs72_e500/best_adv_patch.png
+far_patch_path: test_collaborative/YOLO_V2_COCO_adv252_neu_far_tps_PCTLinear_cc_alexnet_p256_L1Mask_tv25_bs72_e500/best_adv_patch.png
+
+# advT_data
+patch_size_median: 0.2519  # i.e. (150-50+1) / (450-50+1)
+#patch_size_range: [60, 400]  #[min_height, max_height]
+patch_size_range: [50, 450]  #[min_height, max_height]
+
+#image_shape: [256, 256, 3]
+#mask_shape: [128, 128]
+
+# log
+log_dir:
+log_file: log.log
+model_checkpoint: checkpoint.pth.tar
+model_best: model_best.pth.tar
+adv_patch_img: adv_patch.png
+adv_patch_img_best: best_adv_patch.png
+
+
+# training parameters
+cuda: True
+gpu_ids: [0,1,2,3,4,5]    # set the GPU ids to use, e.g. [0] or [1, 2]
+num_workers: 24
+compute_dsr: False
+visualize: False
+epochs: 1000
+batch_size: 72
+lr: 0.1
+beta1: 0.5
+beta2: 0.9
+print_iter: 20
+# scheduler
+scheduler_patience: 25
+scheduler_factor: 0.5
