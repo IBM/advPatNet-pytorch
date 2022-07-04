@@ -19,11 +19,11 @@ tv_loss_weight: 2.5
 #Faster_RCNN: Faster_RCNN_VGG16, Faster_RCNN_R50, Faster_RCNN_R101
 #DETECTRON2: DFaster_RCNN_R50, DFaster_RCNN_R101, DRCNN_FPN_R50, DRCNN_FPN_R101, DRetinaNet_R50, DRetinaNet_R101
 
-detector_impl: Faster_RCNN
-detector_name: Faster_RCNN_VGG16
-detector_input_size: [1080, 1920]
+detector_impl: YOLO
+detector_name: YOLO_V2 
+detector_input_size: [416, 416]
+#detector_input_size: [1080, 1920]
 #detector_input_size: [540, 960]
-#detector_input_size: [416, 416]
 detector_test_size: [-1,-1]
 object_dataset: COCO # COCO or VOC
 target_object_id: -1

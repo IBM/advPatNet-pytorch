@@ -6,7 +6,7 @@ template_resize: False
 
 # geometric transformation --- STN parameters
 learnableSTN: False   # learn STN or fix it
-STN_loss: SIMMMask # L1, L2, SIMMMask, L1Mask
+STN_loss: L1Mask # L1, L2, SIMMMask, L1Mask
 STN: tps   # affine or tps
 loc_backbone: resnet18
 loc_downsample_dim: 128
